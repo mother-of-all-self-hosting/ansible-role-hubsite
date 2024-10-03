@@ -45,7 +45,7 @@
 
 - name: Ensure hubsite css is installed
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/html/styles.css.j2"
+    src: "{{ role_path }}/templates/html/{{ hubsite_css_template }}"
     dest: "{{ hubsite_html_path }}/styles.css"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"

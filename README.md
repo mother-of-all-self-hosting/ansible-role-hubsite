@@ -98,3 +98,19 @@ There are some logos provided, so you can get started with a nice look immediate
 | Vaultwarden       | [AGPL v3.0](https://github.com/dani-garcia/vaultwarden/blob/main/LICENSE.txt)                                  | Mathijs van Veluw                    | ✅            | `{{ role_path }}/assets/vaultwarden.png`  |
 | WG Easy           | [custom](https://github.com/wg-easy/wg-easy/blob/master/LICENSE.md)                                            | Emile Nijssen                        | ✅            | `{{ role_path }}/assets/wg_easy.png`      |
 | Woodpecker CI     | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                                      | Woodpecker contributors              | ✅            | `{{ role_path }}/assets/woodpecker.png`   |
+
+
+# Custom CSS
+
+If you want to provide a custom css file, copy the default template to a different name like `custom.css.j2`. Make sure to not put it into another directory.
+
+```bash
+cp templates/html/styles.css.j2 templates/html/custom.css.j2
+```
+
+Now you can edit it for example with `vim templates/html/custom.css.j2`.
+
+Finally, tell the role to use the new css file by adding the following in `vars.yml`:
+```
+hubsite_css_template: "custom.css.j2"
+```
