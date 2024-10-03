@@ -102,15 +102,26 @@ There are some logos provided, so you can get started with a nice look immediate
 
 # Custom CSS
 
-If you want to provide a custom css file, copy the default template to a different name like `custom.css.j2`. Make sure to not put it into another directory.
+If you want to provide custom css, you can add it via the `hubsite_extra_css` variable like this:
+```yaml
+hubsite_extra_css: |
+  html {
+    background-color: #001a28;
+    color: white;
+  }
 
-```bash
-cp templates/html/styles.css.j2 templates/html/custom.css.j2
-```
+  .flexblock a {
+      border: 5px solid #906000;
+      padding: 20px;
+      border-radius: 30px;
+      margin: 15px;
+      text-align: center;
+      background-color: #046;
+      width: 25%;
+  }
 
-Now you can edit it for example with `vim templates/html/custom.css.j2`.
-
-Finally, tell the role to use the new css file by adding the following in `vars.yml`:
+  .logo {
+      background-color: #046;
+  }
 ```
-hubsite_css_template: "custom.css.j2"
-```
+The values you provide there will override the default values which you can find here: https://github.com/mother-of-all-self-hosting/ansible-role-hubsite/blob/main/templates/html/styles.css.j2
