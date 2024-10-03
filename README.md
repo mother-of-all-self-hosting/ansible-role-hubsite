@@ -102,7 +102,8 @@ There are some logos provided, so you can get started with a nice look immediate
 
 # Custom CSS
 
-If you want to provide custom css, you can add it via the `hubsite_extra_css` variable like this:
+If you want to provide custom styling (CSS), you can add it (by appending it **on top of** the [default styles](https://github.com/mother-of-all-self-hosting/ansible-role-hubsite/blob/main/templates/html/styles.css.j2)) via the `hubsite_extra_css` variable like this:
+
 ```yaml
 hubsite_extra_css: |
   html {
@@ -124,4 +125,3 @@ hubsite_extra_css: |
       background-color: #046;
   }
 ```
-The values you provide there will override the default values which you can find here: https://github.com/mother-of-all-self-hosting/ansible-role-hubsite/blob/main/templates/html/styles.css.j2
