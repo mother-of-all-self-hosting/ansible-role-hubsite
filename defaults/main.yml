@@ -38,7 +38,9 @@ hubsite_container_network: "{{ hubsite_identifier }}"
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
 # Use this to expose this container to a reverse proxy, which runs in a different container network.
-hubsite_container_additional_networks: []
+hubsite_container_additional_networks: "{{ hubsite_container_additional_networks_auto + hubsite_container_additional_networks_custom }}"
+hubsite_container_additional_networks_auto: []
+hubsite_container_additional_networks_custom: []
 
 # hubsite_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `roles/custom/hubsite/templates/labels.j2` for details.
