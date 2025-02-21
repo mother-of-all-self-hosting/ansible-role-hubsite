@@ -15,7 +15,10 @@ hubsite_html_path: "{{ hubsite_base_path }}/html"
 hubsite_assets_path: "{{ hubsite_html_path }}/assets"
 hubsite_extra_css: ""
 
-hubsite_systemd_required_services_list: ['docker.service']
+hubsite_systemd_required_services_list: "{{ hubsite_systemd_required_services_list_default + hubsite_systemd_required_services_list_auto + hubsite_systemd_required_services_list_custom }}"
+hubsite_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
+hubsite_systemd_required_services_list_auto: []
+hubsite_systemd_required_services_list_custom: []
 
 hubsite_nginx_version: 1.27.2
 
