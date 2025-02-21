@@ -1,10 +1,5 @@
 ---
 
-- name: Ensure hubsite network is created in Docker
-  community.docker.docker_network:
-    name: "{{ hubsite_container_network }}"
-    driver: bridge
-
 - name: Ensure hubsite path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
@@ -65,6 +60,13 @@
   community.docker.docker_image:
     name: "{{ hubsite_container_image }}"
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+
+- name: Ensure hubsite container network is created
+  community.docker.docker_network:
+    enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
+    name: "{{ hubsite_container_network }}"
+    driver: bridge
+    driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
 
 - name: Ensure hubsite.service installed
   ansible.builtin.template:
