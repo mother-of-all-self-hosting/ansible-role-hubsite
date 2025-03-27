@@ -1,3 +1,11 @@
+<!--
+SPDX-FileCopyrightText: 2023 - 2024 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2024 Kuchenmampfer
+SPDX-FileCopyrightText: 2024 Tammes Burghard
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Hubsite
 
 [![status-badge](https://woodpecker.hyteck.de/api/badges/102/status.svg)](https://woodpecker.hyteck.de/repos/102)
