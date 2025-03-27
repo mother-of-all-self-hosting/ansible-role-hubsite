@@ -95,11 +95,6 @@ services:
     url: /
     logo_location: "assets/mobilizon.png"
 
-  - name: N8n
-    description: Workflow automation for technical people.
-    url: /
-    logo_location: "assets/n8n.png"
-
   - name: Navidrome
     description: Subsonic-API compatible music server
     url: /
