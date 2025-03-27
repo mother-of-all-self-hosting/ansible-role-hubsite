@@ -104,10 +104,12 @@ There are some logos provided, so you can get started with a nice look immediate
 | Semaphore         | [MIT](https://github.com/ansible-semaphore/semaphore)                                                          | Castaway Consulting LLC              | ✅            | `{{ role_path }}/assets/semaphore.png`    |
 | Stirling PDF      | [MIT](https://github.com/Stirling-Tools/Stirling-PDF/blob/main/LICENSE)                                        | Stirling Tools                       | ✅            | `{{ role_path }}/assets/stirling-pdf.png` |
 | Syncthing         | [MPLv2](https://github.com/syncthing/syncthing/blob/main/LICENSE)                                              | Syncthing contributors               | ✅            | `{{ role_path }}/assets/syncthing.png`    |
+| Tandoor           | [AGPL v3.0](https://github.com/TandoorRecipes/recipes/blob/develop/LICENSE.md)                                 | vabene1111                           | ✅            | `{{ role_path }}/assets/tandoor.png`      |
 | Uptime Kuma       | [MIT](https://github.com/louislam/uptime-kuma/blob/master/LICENSE)                                             | Louis Lam                            | ✅            | `{{ role_path }}/assets/uptime-kuma.png`  |
 | Vaultwarden       | [AGPL v3.0](https://github.com/dani-garcia/vaultwarden/blob/main/LICENSE.txt)                                  | Mathijs van Veluw                    | ✅            | `{{ role_path }}/assets/vaultwarden.png`  |
 | WG Easy           | [custom](https://github.com/wg-easy/wg-easy/blob/master/LICENSE)                                            | Emile Nijssen                        | ✅            | `{{ role_path }}/assets/wireguard_easy.png`      |
 | Woodpecker CI     | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                                      | Woodpecker contributors              | ✅            | `{{ role_path }}/assets/woodpecker.png`   |
+| Writefreely       | [AGPL v3.0](https://github.com/writefreely/writefreely/blob/develop/LICENSE)                                   | Matt Baer                            | ✅            | `{{ role_path }}/assets/writefreely.png`  |
 
 
 # Custom CSS
