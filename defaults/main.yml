@@ -13,8 +13,10 @@ hubsite_base_path: "/hubsite"
 hubsite_html_path: "{{ hubsite_base_path }}/html"
 hubsite_assets_path: "{{ hubsite_html_path }}/assets"
 
+# The hostname at which Hubsite is served.
 hubsite_hostname: ""
 
+# The path at which Hubsite is exposed.
 hubsite_subpath: "/"
 
 # renovate: datasource=docker depName=nginx versioning=semver
@@ -32,6 +34,7 @@ hubsite_container_image_force_pull: "{{ hubsite_container_image.endswith(':lates
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:8731"), or empty string to not expose.
 hubsite_container_http_host_bind_port: ""
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
 hubsite_container_network: "{{ hubsite_identifier }}"
 
 # The port number in the container
