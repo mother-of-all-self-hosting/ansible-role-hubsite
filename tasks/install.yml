@@ -5,7 +5,7 @@
 
 ---
 
-- name: Ensure hubsite path exists
+- name: Ensure Hubsite path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -15,7 +15,7 @@
   with_items:
     - {path: "{{ hubsite_base_path }}", when: true}
 
-- name: Ensure hubsite public path exists
+- name: Ensure Hubsite public path exists
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
@@ -26,7 +26,7 @@
     - {path: "{{ hubsite_html_path }}", when: true}
     - {path: "{{ hubsite_assets_path }}", when: true}
 
-- name: Ensure hubsite traefik labels are installed
+- name: Ensure Hubsite traefik labels are installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/labels.j2"
     dest: "{{ hubsite_base_path }}/labels"
@@ -35,7 +35,7 @@
     mode: "0640"
   when: hubsite_container_labels_traefik_enabled
 
-- name: Ensure hubsite html is installed
+- name: Ensure Hubsite html is installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/html/index.html.j2"
     dest: "{{ hubsite_html_path }}/index.html"
@@ -43,7 +43,7 @@
     group: "{{ hubsite_gid }}"
     mode: "0644"
 
-- name: Ensure hubsite css is installed
+- name: Ensure Hubsite css is installed
   ansible.builtin.template:
     src: "{{ role_path }}/templates/html/styles.css.j2"
     dest: "{{ hubsite_html_path }}/styles.css"
@@ -51,7 +51,7 @@
     group: "{{ hubsite_gid }}"
     mode: "0644"
 
-- name: Ensure hubsite logos are installed
+- name: Ensure Hubsite logos are installed
   ansible.builtin.copy:
     src: "{{ item.logo_location }}"
     dest: "{{ hubsite_assets_path }}/{{ item.logo_location.split('/') | last }}"
@@ -66,7 +66,7 @@
     name: "{{ hubsite_container_image }}"
     source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
 
-- name: Ensure hubsite container network is created
+- name: Ensure Hubsite container network is created
   community.docker.docker_network:
     enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ hubsite_container_network }}"
