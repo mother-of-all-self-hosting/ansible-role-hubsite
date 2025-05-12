@@ -28,8 +28,12 @@ hubsite_systemd_required_services_list_custom: []
 # renovate: datasource=docker depName=nginx versioning=semver
 hubsite_nginx_version: 1.27.4
 
-hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}nginx:{{ hubsite_nginx_version }}"
-hubsite_container_image_registry_prefix: "docker.io/"
+hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}nginx:{{ hubsite_container_image_tag }}"
+hubsite_container_image_tag: "{{ hubsite_nginx_version }}"
+hubsite_container_image_registry_prefix: "{{ hubsite_container_image_registry_prefix_upstream }}"
+hubsite_container_image_registry_prefix_upstream: "{{ hubsite_container_image_registry_prefix_upstream_default }}"
+hubsite_container_image_registry_prefix_upstream_default: docker.io/
+hubsite_container_image_force_pull: "{{ hubsite_container_image.endswith(':latest') }}"
 
 # The port number in the container
 hubsite_container_http_port: 80
