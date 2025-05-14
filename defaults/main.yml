@@ -26,7 +26,7 @@ hubsite_systemd_required_services_list_auto: []
 hubsite_systemd_required_services_list_custom: []
 
 # renovate: datasource=docker depName=nginx versioning=semver
-hubsite_nginx_version: 1.27.4
+hubsite_nginx_version: 1.28.0
 
 hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}nginx:{{ hubsite_nginx_version }}"
 hubsite_container_image_registry_prefix: "docker.io/"
