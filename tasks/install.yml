@@ -73,7 +73,7 @@
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
 
-- name: Ensure hubsite.service installed
+- name: Ensure Hubsite systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/hubsite.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
