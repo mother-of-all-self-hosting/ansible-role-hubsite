@@ -48,7 +48,7 @@ hubsite_container_additional_networks_auto: []
 hubsite_container_additional_networks_custom: []
 
 # hubsite_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
-# See `roles/custom/hubsite/templates/labels.j2` for details.
+# See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `hubsite_container_labels_additional_labels`.
 hubsite_container_labels_traefik_enabled: false
@@ -57,7 +57,7 @@ hubsite_container_labels_traefik_entrypoints: web-secure
 hubsite_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # hubsite_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `roles/custom/collabora_online/templates/labels.j2` for details.
+# See `../templates/labels.j2` for details.
 #
 # Example:
 # hubsite_container_labels_additional_labels: |
