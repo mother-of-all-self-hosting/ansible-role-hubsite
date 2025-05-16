@@ -1,4 +1,5 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2024 Slavi Pantaleev
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -11,18 +12,19 @@
 
 - when: hubsite_service_stat.stat.exists | bool
   block:
-    - name: Ensure Hubsite service is stopped
+    - name: Ensure Hubsite systemd service is stopped
       ansible.builtin.service:
         name: "{{ hubsite_identifier }}"
         state: stopped
         enabled: false
+        daemon_reload: true
 
-    - name: Ensure Hubsite services don't exist
+    - name: Ensure Hubsite systemd service does not exist
       ansible.builtin.file:
-        dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
+        path: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
         state: absent
 
-    - name: Ensure Hubsite base path is files deleted
+    - name: Ensure Hubsite path does not exist
       ansible.builtin.file:
         path: "{{ hubsite_base_path }}"
         state: absent
