@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 #}
 
 [Unit]
-Description=Hubsite - static website service list
+Description=Hubsite ({{ hubsite_identifier }})
 {% for service in hubsite_systemd_required_services_list %}
 Requires={{ service }}
 After={{ service }}
