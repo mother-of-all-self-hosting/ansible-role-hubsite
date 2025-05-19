@@ -1,11 +1,18 @@
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
 
-- block:
-    - when: hubsite_enabled | bool
+- name: Perform Hubsite installation tasks
+  block:
+    - name: Validate Hubsite configuration
+      when: hubsite_enabled | bool
+      ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
+
+    - name: Install Hubsite
+      when: hubsite_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -13,8 +20,10 @@
     - install-all
     - install-hubsite
 
-- block:
-    - when: not hubsite_enabled | bool
+- name: Perform Hubsite uninstallation tasks
+  block:
+    - name: Uninstall Hubsite
+      when: not hubsite_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
