@@ -5,12 +5,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure Hubsite path exists
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0750
+    mode: "0750"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
   with_items:
@@ -20,7 +19,7 @@
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
-    mode: 0755
+    mode: "0755"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
   with_items:
@@ -31,7 +30,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/labels.j2"
     dest: "{{ hubsite_base_path }}/labels"
-    mode: 0640
+    mode: "0640"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
   when: hubsite_container_labels_traefik_enabled
@@ -40,7 +39,7 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/html/{{ item }}.j2"
     dest: "{{ hubsite_html_path }}/{{ item }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
   with_items:
@@ -51,7 +50,7 @@
   ansible.builtin.copy:
     src: "{{ item.logo_location }}"
     dest: "{{ hubsite_assets_path }}/{{ item.logo_location.split('/') | last }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
   when: item.logo_location | length > 0
@@ -79,4 +78,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/hubsite.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
-    mode: 0644
+    mode: "0644"

@@ -14,7 +14,7 @@ Hubsite is an ansible role to run a simple, static site that shows an overview o
 
 It is powered by the official nginx docker image.
 
-You can alternativly use it manually with
+You can alternatively use it manually with
 
 ```bash
 python cli.py render -i services_example.yml
@@ -65,7 +65,6 @@ hubsite_service_list_auto: |
 
 If you don't have a fitting logo for your service just use `logo_location': ''`
 
-
 ## Logos
 
 There are some logos provided, so you can get started with a nice look immediately.
@@ -75,11 +74,11 @@ There are some logos provided, so you can get started with a nice look immediate
 | Generic Docs Icon | CCO                                                                                                            | moanos                               | ❌            | `{{ role_path }}/assets/docs.png`         |
 | Generic Shield    | CC0                                                                                                            | moanos                               | ❌            | `{{ role_path }}/assets/shield.png`       |
 | Generic Mail Icon | CCO                                                                                                            | moanos                               | ❌            | `{{ role_path }}/assets/mail.png`         |
-| Appsmith          | [Apache License](https://github.com/appsmithorg/appsmith/blob/release/LICENSE)                                 | Appsmith contributers                | ✅            | `{{ role_path }}/assets/appsmith.png`     |
+| Appsmith          | [Apache License](https://github.com/appsmithorg/appsmith/blob/release/LICENSE)                                 | Appsmith contributors                | ✅            | `{{ role_path }}/assets/appsmith.png`     |
 | Authentik         | [CC-BY-SA 4.0](https://github.com/goauthentik/authentik/blob/main/LICENSE)                                     | Jens Langhammer                      | ✅            | `{{ role_path }}/assets/authentik.png`    |
 | Bookstack         | [MIT](https://github.com/BookStackApp/BookStack/blob/development/LICENSE)                                      | Dan Brown                            | ✅            | `{{ role_path }}/assets/bookstack.png`    |
 | Docker            | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                                      | dotCloud, Inc.                       | ✅            | `{{ role_path }}/assets/docker.png`       |
-| Firezone          | [Apache License](https://github.com/firezone/firezone/blob/master/LICENSE)                                     | Firezone contributers                | ✅            | `{{ role_path }}/assets/firezone.png`     |
+| Firezone          | [Apache License](https://github.com/firezone/firezone/blob/master/LICENSE)                                     | Firezone contributors                | ✅            | `{{ role_path }}/assets/firezone.png`     |
 | Focalboard        | [AGPL v.3.0](https://github.com/mattermost/focalboard/blob/main/LICENSE.txt)                                   | Mattermost, Inc.                     | ✅            | `{{ role_path }}/assets/focalboard.png`   |
 | FreshRSS          | [AGPL v.3.0](https://github.com/FreshRSS/FreshRSS/blob/edge/LICENSE.txt)                                       | FreshRSS contributors                | ✅            | `{{ role_path }}/assets/freshrss.png`     |
 | Funkwhale         | [CC BY-SA 3.0](https://dev.funkwhale.audio/funkwhale/funkwhale/-/blob/stable/front/src/assets/logo/License.md) | Francis Gading                       | ✅            | `{{ role_path }}/assets/funkwhale.png`    |
@@ -87,13 +86,13 @@ There are some logos provided, so you can get started with a nice look immediate
 | GoToSocial        | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)                                                | Anna Abramek                         | ✅            | `{{ role_path }}/assets/gotosocial.png`   |
 | Grafana           | [AGPL v3.0](https://github.com/grafana/grafana/blob/main/LICENSE)                                              | Grafana Labs                         | ✅            | `{{ role_path }}/assets/grafana.png`      |
 | Healthchecks      | [BSD 3-Clause](https://github.com/healthchecks/healthchecks/blob/master/LICENSE)                               | Pēteris Caune and other contributors | ✅            | `{{ role_path }}/assets/healthchecks.png` |
-| Jitsi             | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                              | Jitsi contributers                   | ✅            | `{{ role_path }}/assets/jitsi.png`        |
-| Keycloak          | [Apache License 2.0](https://github.com/keycloak/keycloak/blob/main/LICENSE.txt)                               | Keycloak contributers                | ✅            | `{{ role_path }}/assets/keycloak.png`     |
-| Lago              | [AGPL v3.0](https://github.com/getlago/lago/blob/main/LICENSE)                                                 | Lago contributers                    | ✅            | `{{ role_path }}/assets/lago.png`         |
+| Jitsi             | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                              | Jitsi contributors                   | ✅            | `{{ role_path }}/assets/jitsi.png`        |
+| Keycloak          | [Apache License 2.0](https://github.com/keycloak/keycloak/blob/main/LICENSE.txt)                               | Keycloak contributors                | ✅            | `{{ role_path }}/assets/keycloak.png`     |
+| Lago              | [AGPL v3.0](https://github.com/getlago/lago/blob/main/LICENSE)                                                 | Lago contributors                    | ✅            | `{{ role_path }}/assets/lago.png`         |
 | Linkding          | [MIT](https://github.com/sissbruecker/linkding/blob/master/LICENSE.txt)                                        | Linkding                             | ✅            | `{{ role_path }}/assets/linkding.png`     |
 | Miniflux          | [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)                                                      | Frédéric Guillot                     | ✅            | `{{ role_path }}/assets/miniflux.png`     |
-| Mobilizon         | [AGPL v.3.0](https://framagit.org/framasoft/mobilizon/-/blob/main/LICENSE)                                     | Mobilizon contributers               | ✅            | `{{ role_path }}/assets/mobilizon.png`    |
-| Navidrome         | [GPL 3.0](https://github.com/navidrome/navidrome/blob/master/LICENSE)                                          | Navidrome contributers               | ✅            | `{{ role_path }}/assets/navidrome.png`    |
+| Mobilizon         | [AGPL v.3.0](https://framagit.org/framasoft/mobilizon/-/blob/main/LICENSE)                                     | Mobilizon contributors               | ✅            | `{{ role_path }}/assets/mobilizon.png`    |
+| Navidrome         | [GPL 3.0](https://github.com/navidrome/navidrome/blob/master/LICENSE)                                          | Navidrome contributors               | ✅            | `{{ role_path }}/assets/navidrome.png`    |
 | Nextcloud         | Public Domain                                                                                                  | Nextcloud                            | ✅            | `{{ role_path }}/assets/nextcloud.png`    |
 | Owncast           | [MIT](https://github.com/owncast/owncast/blob/develop/LICENSE)                                                 | Owncast contributors                 | ✅            | `{{ role_path }}/assets/owncast.png`      |
 | Peertube          | Public Domain                                                                                                  | PeerTube contributors                | ✅            | `{{ role_path }}/assets/peertube.png`     |
@@ -111,8 +110,7 @@ There are some logos provided, so you can get started with a nice look immediate
 | Woodpecker CI     | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)                                                      | Woodpecker contributors              | ✅            | `{{ role_path }}/assets/woodpecker.png`   |
 | Writefreely       | [AGPL v3.0](https://github.com/writefreely/writefreely/blob/develop/LICENSE)                                   | Matt Baer                            | ✅            | `{{ role_path }}/assets/writefreely.png`  |
 
-
-# Custom CSS
+## Custom CSS
 
 If you want to provide custom styling (CSS), you can add it (by appending it **on top of** the [default styles](https://github.com/mother-of-all-self-hosting/ansible-role-hubsite/blob/main/templates/html/styles.css.j2)) via the `hubsite_extra_css` variable like this:
 
@@ -137,3 +135,9 @@ hubsite_extra_css: |
       background-color: #046;
   }
 ```
+
+## Development
+
+You can optionally install [pre-commit](https://pre-commit.com/) so that simple mistakes are checked and noticed before changes are pushed to a remote branch. See [`.pre-commit-config.yaml`](./.pre-commit-config.yaml) for which hooks are to be executed.
+
+See [this section](https://pre-commit.com/#usage) on the official documentation for usage.

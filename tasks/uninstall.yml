@@ -4,13 +4,13 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Check existence of Hubsite systemd service
   ansible.builtin.stat:
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
   register: hubsite_service_stat
 
-- when: hubsite_service_stat.stat.exists | bool
+- name: Uninstall Hubsite systemd services and files
+  when: hubsite_service_stat.stat.exists | bool
   block:
     - name: Ensure Hubsite systemd service is stopped
       ansible.builtin.service:

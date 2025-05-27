@@ -25,7 +25,7 @@ def load_service_file(filename: str) -> list[Service]:
         services.append(service)
     title = loaded_data["title"]
     subtitle = loaded_data["subtitle"]
-    
+
     return {"services": services, "title": title, "subtitle": subtitle}
 
 def cli():
@@ -52,9 +52,9 @@ def cli():
     except FileNotFoundError:
         print("Local service file was not found. Make sure to specify it's location via -i")
         exit()
-    
 
-    # Render the templats
+
+    # Render the templates
     env = Environment(
         loader=FileSystemLoader('templates/html'),
         autoescape=select_autoescape()
@@ -68,7 +68,7 @@ def cli():
         output_dir = args.output
     else:
         output_dir = "public"
-    
+
     # Ensure the output directory exists
     if not os.path.isdir(output_dir):
         os.makedirs(output_dir)
