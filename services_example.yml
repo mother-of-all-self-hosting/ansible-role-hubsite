@@ -7,7 +7,6 @@
 title: Hubsite
 subtitle: An landing page for selfhosted services
 
-
 services:
   - name: Adguard Home
     description: A network-wide DNS software for blocking ads & tracking
