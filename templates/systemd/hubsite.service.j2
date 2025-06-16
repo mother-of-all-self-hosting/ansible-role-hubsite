@@ -38,7 +38,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       {% endif %}
       --label-file={{ hubsite_base_path }}/labels \
       --mount type=bind,src={{ hubsite_html_path }},dst=/usr/share/nginx/html,ro \
-      {{ hubsite_container_image }}
+      {{ hubsite_container_image_self_build_name if hubsite_container_image_self_build else hubsite_container_image }}
 
 {% for network in hubsite_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ hubsite_identifier }}
