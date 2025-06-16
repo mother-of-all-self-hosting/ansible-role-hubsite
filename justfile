@@ -12,4 +12,4 @@ lint:
 
 # Renders the services_example.yml to public/
 render:
-  python cli.py render -i services_example.yml
+    python cli.py render -i services_example.yml
