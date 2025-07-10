@@ -1,8 +1,9 @@
 ---
 galaxy_info:
-  role_name: hubsite
   author: Julian-Samuel Gebühr
   company: Hyteck
+  role_name: hubsite
+  namespace: mash
   description: Ansible role that provides a simple service overview
   platforms:
     - name: Debian
