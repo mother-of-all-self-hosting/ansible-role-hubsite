@@ -1,32 +1,25 @@
 <!--
 SPDX-FileCopyrightText: 2023 - 2024 Julian-Samuel Gebühr
+SPDX-FileCopyrightText: 2023 Slavi Pantaleev
 SPDX-FileCopyrightText: 2024 Kuchenmampfer
 SPDX-FileCopyrightText: 2024 Tammes Burghard
+SPDX-FileCopyrightText: 2025 Suguru Hirahara
 
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# Hubsite
+# Hubsite Ansible role
+
+This is an [Ansible](https://www.ansible.com/) role which installs Hubsite to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+
+This role *implicitly* depends on:
+
+- [`com.devture.ansible.role.playbook_help`](https://github.com/devture/com.devture.ansible.role.playbook_help)
+- [`com.devture.ansible.role.systemd_docker_base`](https://github.com/devture/com.devture.ansible.role.systemd_docker_base)
+
+Check [defaults/main.yml](defaults/main.yml) for the full list of supported options.
 
 💡 See this [document](docs/configuring-hubsite.md) for details about setting up the service with this role.
-
-[![status-badge](https://woodpecker.hyteck.de/api/badges/102/status.svg)](https://woodpecker.hyteck.de/repos/102)
-
-Hubsite is an ansible role to run a simple, static site that shows an overview of available services.
-
-It is powered by the official nginx docker image.
-
-
-
-## How does it look?
-
-![A screenshot of Hubsite hosting different services like Miniflux and Nextcloud. The site and service logos are expressed in grey an white tones](assets/hubsite_desktop.png)
-
-It uses `prefers-color-scheme` to automatically set the color scheme to light or dark. Check out  [this **live preview**](https://hubsite.hyteck.de) to see an example with all pre-configured services.
-
-## Configuration
-
-
 
 ## Development
 
