@@ -8,6 +8,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Hubsite
 
+💡 See this [document](docs/configuring-hubsite.md) for details about setting up the service with this role.
+
 [![status-badge](https://woodpecker.hyteck.de/api/badges/102/status.svg)](https://woodpecker.hyteck.de/repos/102)
 
 Hubsite is an ansible role to run a simple, static site that shows an overview of available services.
