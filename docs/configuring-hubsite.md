@@ -25,7 +25,7 @@ This is an [Ansible](https://www.ansible.com/) role which installs Hubsite to ru
 
 Hubsite is an ansible role to run a simple, static site that shows an overview of available services. It makes use of the official nginx docker image.
 
-[<img src="assets/hubsite_desktop.png" width="600" alt="The UI with services like Miniflux and Nextcloud. The site and service logos are expressed in grey an white tones">](assets/hubsite_desktop.png)
+[<img src="../assets/hubsite_desktop.png" width="600" alt="The UI with services like Miniflux and Nextcloud. The site and service logos are expressed in grey an white tones">](assets/hubsite_desktop.png)
 
 ## Adjusting the playbook configuration
 
