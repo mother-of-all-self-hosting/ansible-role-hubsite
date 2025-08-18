@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 # Setting up Hubsite
 
-This is an [Ansible](https://www.ansible.com/) role which installs Hubsite to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
+This is an [Ansible](https://www.ansible.com/) role which installs [Hubsite](https://github.com/moan0s/hubsite) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.
 
 Hubsite is an ansible role to run a simple, static site that shows an overview of available services. It makes use of the official nginx docker image.
 
