@@ -148,7 +148,7 @@ If you use the MASH playbook, the shortcut commands with the [`just` program](ht
 
 ## Usage
 
-After running the command for installation, the Headscale instance becomes available at the URL specified with `hubsite_hostname`. With the configuration above, the service is hosted at `https://example.com`.
+After running the command for installation, the Hubsite instance becomes available at the URL specified with `hubsite_hostname`. With the configuration above, the service is hosted at `https://example.com`.
 
 You can alternatively output the page manually by running the command below:
 
