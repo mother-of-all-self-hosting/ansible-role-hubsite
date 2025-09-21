@@ -4,7 +4,7 @@
 
 # Shows help
 default:
-    @{{ just_executable() }} --list --justfile {{ justfile() }}
+    @{{ just_executable() }} --list --justfile "{{ justfile() }}"
 
 # Runs ansible-lint against the role
 lint:
