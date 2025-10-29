@@ -24,7 +24,7 @@ hubsite_hostname: ""
 hubsite_subpath: "/"
 
 # renovate: datasource=docker depName=nginx versioning=semver
-hubsite_nginx_version: 1.29.2
+hubsite_nginx_version: 1.29.3
 
 hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}nginx:{{ hubsite_container_image_tag }}"
 hubsite_container_image_tag: "{{ hubsite_nginx_version }}"
