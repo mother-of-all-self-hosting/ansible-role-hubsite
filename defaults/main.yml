@@ -68,12 +68,15 @@ hubsite_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
 # hubsite_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/labels.j2` for details.
+# To add your own custom labels, use `hubsite_container_labels_additional_labels_custom`
 #
 # Example:
-# hubsite_container_labels_additional_labels: |
+# hubsite_container_labels_additional_labels_custom: |
 #   my.label=1
 #   another.label="here"
-hubsite_container_labels_additional_labels: ''
+hubsite_container_labels_additional_labels: "{{ hubsite_container_labels_additional_labels_auto | combine(hubsite_container_labels_additional_labels_custom) }}"
+hubsite_container_labels_additional_labels_auto: {}
+hubsite_container_labels_additional_labels_custom: {}
 
 # List of systemd services that the Hubsite systemd service depends on
 hubsite_systemd_required_services_list: "{{ hubsite_systemd_required_services_list_default + hubsite_systemd_required_services_list_auto + hubsite_systemd_required_services_list_custom }}"
