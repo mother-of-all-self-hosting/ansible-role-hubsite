@@ -78,6 +78,11 @@ hubsite_container_labels_additional_labels: "{{ hubsite_container_labels_additio
 hubsite_container_labels_additional_labels_auto: {}
 hubsite_container_labels_additional_labels_custom: {}
 
+# A list of extra arguments to pass to the container (`docker create` command)
+hubsite_container_extra_arguments: "{{ hubsite_container_extra_arguments_auto + hubsite_container_extra_arguments_custom }}"
+hubsite_container_extra_arguments_auto: []
+hubsite_container_extra_arguments_custom: []
+
 # List of systemd services that the Hubsite systemd service depends on
 hubsite_systemd_required_services_list: "{{ hubsite_systemd_required_services_list_default + hubsite_systemd_required_services_list_auto + hubsite_systemd_required_services_list_custom }}"
 hubsite_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
