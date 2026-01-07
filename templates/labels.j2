@@ -16,4 +16,6 @@ traefik.http.routers.{{ hubsite_identifier }}.tls.certResolver={{ hubsite_contai
 traefik.http.services.{{ hubsite_identifier }}.loadbalancer.server.port={{ hubsite_container_http_port }}
 {% endif %}
 
-{{ hubsite_container_labels_additional_labels }}
+{% for arg in hubsite_container_labels_additional_labels %}
+{{ arg }}
+{% endfor %}
