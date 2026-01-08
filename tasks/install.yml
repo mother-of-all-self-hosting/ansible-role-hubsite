@@ -30,9 +30,9 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/{{ item }}.j2"
     dest: "{{ hubsite_base_path }}/{{ item }}"
+    mode: "0640"
     owner: "{{ hubsite_uid }}"
     group: "{{ hubsite_gid }}"
-    mode: "0640"
   with_items:
     - env
     - labels
