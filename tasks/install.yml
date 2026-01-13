@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Ensure Hubsite path exists
+- name: Ensure Hubsite paths exist
   ansible.builtin.file:
     path: "{{ item }}"
     state: directory
@@ -14,15 +14,6 @@
     group: "{{ hubsite_gid }}"
   with_items:
     - "{{ hubsite_base_path }}"
-
-- name: Ensure Hubsite public paths exist
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    mode: "0750"
-    owner: "{{ hubsite_uid }}"
-    group: "{{ hubsite_gid }}"
-  with_items:
     - "{{ hubsite_html_path }}"
     - "{{ hubsite_assets_path }}"
 
