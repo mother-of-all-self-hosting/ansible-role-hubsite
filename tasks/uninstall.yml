@@ -30,6 +30,7 @@
       community.docker.docker_network:
         name: "{{ hubsite_container_network }}"
         state: absent
+      register: hubsite_network_deletion_result
 
     - name: Ensure Hubsite container network does not exist via ansible.builtin.command
       when: devture_systemd_docker_base_container_network_creation_method == 'command'
@@ -37,8 +38,8 @@
         cmd: >-
           {{ devture_systemd_docker_base_host_command_docker }} network rm
           {{ hubsite_container_network }}
-      register: network_deletion_result
-      changed_when: hubsite_container_network in network_deletion_result.stdout
+      register: hubsite_network_deletion_result
+      changed_when: hubsite_container_network in hubsite_network_deletion_result.stdout
 
     - name: Ensure Hubsite path does not exist
       ansible.builtin.file:
