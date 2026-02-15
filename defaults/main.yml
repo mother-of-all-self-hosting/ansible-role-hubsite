@@ -42,6 +42,9 @@ hubsite_container_image_self_build_src_files_path: "{{ hubsite_base_path }}/dock
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 hubsite_container_network: "{{ hubsite_identifier }}"
 
+# Control if the container network is deleted on uninstalling.
+hubsite_container_network_deletion_enabled: true
+
 # Specify how the container publishes its HTTP port (as defined by `hubsite_container_http_port`).
 #
 # Takes an "<ip>:<port>" or "<port>" value (e.g. "127.0.0.1:2586"), or empty string to not expose.
