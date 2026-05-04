@@ -31,7 +31,6 @@ hubsite_container_image_tag: "{{ hubsite_nginx_version }}"
 hubsite_container_image_registry_prefix: "{{ hubsite_container_image_registry_prefix_upstream }}"
 hubsite_container_image_registry_prefix_upstream: "{{ hubsite_container_image_registry_prefix_upstream_default }}"
 hubsite_container_image_registry_prefix_upstream_default: docker.io/
-hubsite_container_image_force_pull: "{{ hubsite_container_image.endswith(':latest') }}"
 
 hubsite_container_image_self_build: false
 hubsite_container_image_self_build_name: "nginx:{{ hubsite_container_image_self_build_repo_version }}"
