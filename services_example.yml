@@ -34,7 +34,7 @@ services:
     logo_location: "assets/firezone.png"
 
   - name: Focalboard
-    description: An open source, self-hosted alternative to Trello, Notion, and Asana.
+    description: An open-source, self-hosted alternative to Trello, Notion, and Asana.
     url: /
     logo_location: "assets/focalboard.png"
 
@@ -74,7 +74,7 @@ services:
     logo_location: "assets/jitsi.png"
 
   - name: Keycloak
-    description: An open source identity and access management solution.
+    description: An open-source identity and access management solution.
     url: /
     logo_location: "assets/keycloak.png"
 
