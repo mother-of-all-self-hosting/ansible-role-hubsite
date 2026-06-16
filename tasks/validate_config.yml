@@ -10,7 +10,7 @@
       Please rename the variable (`{{ item.old }}` -> `{{ item.new }}`) on your configuration file (vars.yml).
   when: "lookup('ansible.builtin.varnames', ('^' + item.old + '$'), wantlist=True) | length > 0"
   with_items:
-    - {"old": "hubsite_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)"}
+    - { "old": "hubsite_container_image_force_pull", "new": "<removed> (the new community.docker.docker_image_pull module handles this natively)" }
 
 - name: Fail if required Hubsite settings not defined
   ansible.builtin.fail:
