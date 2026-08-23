@@ -5,3 +5,5 @@ public/
 .ansible
 
 /var/
+
+molecule/venv

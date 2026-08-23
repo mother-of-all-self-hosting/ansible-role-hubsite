@@ -1,0 +1,73 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+dependency:
+  name: galaxy
+  options:
+    requirements-file: requirements.yml
+    force: true
+driver:
+  name: docker
+platforms:
+  - name: hubsite-${MOLECULE_DISTRO:-ubuntu2604}-default
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-ubuntu2604}-ansible:latest"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    cgroupns_mode: host
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      callback_result_format: yaml
+  inventory:
+    group_vars:
+      all:
+        # Helper variables
+        hubsite_debug_service_enabled: false
+
+        # The port on the host that the Hubsite web server is published on.
+        # In a real deployment, Hubsite sits behind a reverse-proxy and is not
+        # published at all, so the scenario picks a port itself.
+        hubsite_molecule_http_bind_port: 8080
+
+        # Variables for Hubsite
+        hubsite_uid: 1000
+        hubsite_gid: 1000
+        hubsite_hostname: localhost
+        hubsite_container_labels_traefik_enabled: false
+
+        hubsite_container_http_host_bind_port: "127.0.0.1:{{ hubsite_molecule_http_bind_port }}"
+
+        # These are required settings without a default value, which
+        # `tasks/validate_config.yml` refuses to run without.
+        hubsite_title: MASH Molecule Hub
+        hubsite_subtitle: Services running on this Molecule test host
+
+        # Hubsite renders a page out of the services it is told about, so a
+        # scenario that configures none of them would serve an empty list and
+        # could not tell a working installation apart from a bare nginx.
+        #
+        # Two entries, because the page template treats them differently: one
+        # with a logo (which the role also has to copy to the assets
+        # directory), one without.
+        hubsite_service_list_additional:
+          - name: Molecule Service With Logo
+            description: An example service entry, which carries a logo
+            url: https://with-logo.molecule.example.com/dashboard
+            logo_location: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/assets/shield.png"
+            priority: 1000
+          - name: Molecule Service Without Logo
+            description: An example service entry, which carries no logo
+            url: https://without-logo.molecule.example.com/dashboard
+            logo_location: ""
+            priority: 2000
+  env:
+    # Workaround for https://github.com/ansible/molecule/issues/4391
+    ANSIBLE_ROLES_PATH: ${MOLECULE_PROJECT_DIRECTORY}/..:/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:~/.ansible/roles
+verifier:
+  name: ansible

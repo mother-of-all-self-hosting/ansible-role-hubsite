@@ -1,0 +1,136 @@
+# SPDX-FileCopyrightText: 2026 Slavi Pantaleev
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+---
+- name: Verify Hubsite
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    # Role defaults are not in scope here, but the nginx version that Renovate
+    # bumps lives in them and is what the served page is checked against below.
+    - name: Load the Hubsite role defaults
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
+        name: hubsite_defaults
+
+    - name: Wait for Hubsite service to become active (up to 180s)
+      ansible.builtin.systemd:
+        name: hubsite.service
+      register: hubsite_service
+      until: hubsite_service.status.ActiveState == 'active'
+      retries: 36
+      delay: 5
+
+    - name: Assert Hubsite service is active
+      ansible.builtin.assert:
+        that: hubsite_service.status.ActiveState == 'active'
+        fail_msg: "hubsite.service not active ({{ hubsite_service.status.ActiveState }})"
+        success_msg: "hubsite.service is active"
+
+    - name: Retrieve Hubsite service log for debugging
+      when: hubsite_debug_service_enabled | bool
+      ansible.builtin.command:
+        cmd: journalctl -xeu hubsite.service
+      changed_when: false
+
+    - name: Wait for the Hubsite page to be served (up to 180s)
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ hubsite_molecule_http_bind_port }}/"
+        method: GET
+        # Nothing about a working Hubsite involves a redirect, so following one
+        # could only turn some other response into a misleading 200.
+        follow_redirects: none
+        return_content: true
+      register: hubsite_page
+      until: hubsite_page.status == 200
+      retries: 36
+      delay: 5
+
+    # Hubsite is a static site served by the official nginx container image, so
+    # the nginx version this role installs is the version of the thing being
+    # tested. nginx announces it in the `Server` response header (it ships with
+    # `server_tokens on`), which is the only version this deployment exposes.
+    - name: Assert the serving nginx is the version this role installs
+      ansible.builtin.assert:
+        that: hubsite_page.server == 'nginx/' ~ hubsite_defaults.hubsite_nginx_version
+        fail_msg: "Hubsite is served by {{ hubsite_page.server }}, expected nginx/{{ hubsite_defaults.hubsite_nginx_version }}"
+        success_msg: "Hubsite is served by {{ hubsite_page.server }}"
+
+    # A bare nginx container answers `/` with a 200 and its own welcome page,
+    # so the status code above says nothing about this role. These assertions
+    # are what separates the two: the page can only carry the configured
+    # headings and service entries if the role rendered its own template and
+    # nginx is serving that rendering.
+    - name: Assert the Hubsite page carries the configured headings
+      ansible.builtin.assert:
+        that:
+          - "'<title>' ~ hubsite_title ~ '</title>' in hubsite_page.content"
+          - "'<strong>' ~ hubsite_title ~ '</strong>' in hubsite_page.content"
+          - "'<p>' ~ hubsite_subtitle ~ '</p>' in hubsite_page.content"
+        fail_msg: "The served page does not carry the configured title/subtitle: {{ hubsite_page.content }}"
+        success_msg: "The served page carries the configured title and subtitle"
+
+    - name: Assert the Hubsite page carries the configured service entries
+      ansible.builtin.assert:
+        that:
+          - "'href=\"' ~ item.url ~ '\"' in hubsite_page.content"
+          - "item.name in hubsite_page.content"
+          - "item.description in hubsite_page.content"
+        fail_msg: "The served page does not carry the {{ item.name }} entry: {{ hubsite_page.content }}"
+        success_msg: "The served page carries the {{ item.name }} entry"
+      loop: "{{ hubsite_service_list_additional }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    # The page template only emits an `<img>` for entries that were given a
+    # logo, and the role separately copies that logo into the assets directory.
+    - name: Assert the Hubsite page links the logo of the entry that has one
+      ansible.builtin.assert:
+        that: "'src=\"assets/shield.png\"' in hubsite_page.content"
+        fail_msg: "The served page does not link the configured logo: {{ hubsite_page.content }}"
+        success_msg: "The served page links the configured logo"
+
+    - name: Assert the Hubsite page emits no logo for the entry that has none
+      ansible.builtin.assert:
+        that: "'<h2>Molecule Service Without Logo</h2>' in hubsite_page.content"
+        fail_msg: "The logo-less entry was not rendered without an image: {{ hubsite_page.content }}"
+        success_msg: "The logo-less entry was rendered without an image"
+
+    - name: Assert the Hubsite page orders service entries by priority
+      ansible.builtin.assert:
+        that: >-
+          hubsite_page.content.index('Molecule Service With Logo')
+          < hubsite_page.content.index('Molecule Service Without Logo')
+        fail_msg: "The service entries are not ordered by priority: {{ hubsite_page.content }}"
+        success_msg: "The service entries are ordered by priority"
+
+    # Assets are served out of the same directory as the page, and a bare nginx
+    # container answers both of these with a 404.
+    - name: Fetch the Hubsite files that the page references
+      ansible.builtin.uri:
+        url: "http://127.0.0.1:{{ hubsite_molecule_http_bind_port }}{{ item }}"
+        method: GET
+        follow_redirects: none
+      register: hubsite_referenced_files
+      loop:
+        - /styles.css
+        - /assets/shield.png
+
+    - name: Assert the Hubsite files that the page references are served
+      ansible.builtin.assert:
+        that: item.status == 200
+        fail_msg: "{{ item.item }} is not served ({{ item.status }})"
+        success_msg: "{{ item.item }} is served"
+      loop: "{{ hubsite_referenced_files.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: Show Hubsite verification summary
+      ansible.builtin.debug:
+        msg:
+          - "Hubsite systemd: {{ hubsite_service.status.ActiveState }}"
+          - "Hubsite server: {{ hubsite_page.server }}"
+          - "Hubsite page size: {{ hubsite_page.content | length }} bytes"
+          - "Hubsite service entries: {{ hubsite_service_list_additional | map(attribute='name') | join(', ') }}"
