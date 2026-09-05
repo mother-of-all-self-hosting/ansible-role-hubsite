@@ -130,7 +130,7 @@
       loop_control:
         label: "{{ item.item }}"
 
-    - name: Show Hubsite verification summary
+    - name: Show the Hubsite verification summary
       ansible.builtin.debug:
         msg:
           - "Hubsite systemd: {{ hubsite_service.status.ActiveState }}"
