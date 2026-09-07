@@ -18,21 +18,27 @@
         file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
         name: hubsite_defaults
 
-    - name: Wait for Hubsite service to become active (up to 180s)
-      ansible.builtin.systemd:
+    - name: Wait for the Hubsite systemd service to become active (up to 180s)
+      ansible.builtin.systemd_service:
         name: hubsite.service
       register: hubsite_service
       until: hubsite_service.status.ActiveState == 'active'
       retries: 36
       delay: 5
+      # So that giving up is reported by the assertion below rather than as a
+      # wall of systemd unit properties.
+      failed_when: false
 
-    - name: Assert Hubsite service is active
+    # `Restart=always` in the systemd unit means that even a container which crashes
+    # and gets restarted reads as active here, so this is a precondition rather than
+    # a result.
+    - name: Assert the Hubsite systemd service is active
       ansible.builtin.assert:
         that: hubsite_service.status.ActiveState == 'active'
-        fail_msg: "hubsite.service not active ({{ hubsite_service.status.ActiveState }})"
+        fail_msg: "hubsite.service is not active ({{ hubsite_service.status.ActiveState }})"
         success_msg: "hubsite.service is active"
 
-    - name: Retrieve Hubsite service log for debugging
+    - name: Retrieve the Hubsite systemd service log for debugging
       when: hubsite_debug_service_enabled | bool
       ansible.builtin.command:
         cmd: journalctl -xeu hubsite.service
