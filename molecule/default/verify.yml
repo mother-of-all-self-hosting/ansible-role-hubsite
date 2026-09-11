@@ -9,6 +9,11 @@
   hosts: all
   become: true
   gather_facts: false
+
+  vars:
+    hubsite_verify_units:
+      - hubsite.service
+
   tasks:
     - name: Verify that Hubsite works
       block:
@@ -20,13 +25,14 @@
             file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
             name: hubsite_defaults
 
-        - name: Wait for the Hubsite systemd service to become active (up to 180s)
+        - name: Wait for the Hubsite systemd services to become active (up to 180s each)
           ansible.builtin.systemd_service:
-            name: hubsite.service
-          register: hubsite_service
-          until: hubsite_service.status.ActiveState == 'active'
+            name: "{{ item }}"
+          register: hubsite_services
+          until: hubsite_services.status.ActiveState == 'active'
           retries: 36
           delay: 5
+          loop: "{{ hubsite_verify_units }}"
           # So that giving up is reported by the assertion below rather than as a
           # wall of systemd unit properties.
           failed_when: false
@@ -34,17 +40,20 @@
         # `Restart=always` in the systemd unit means that even a container which crashes
         # and gets restarted reads as active here, so this is a precondition rather than
         # a result.
-        - name: Assert the Hubsite systemd service is active
+        - name: Assert the Hubsite systemd services are active
           ansible.builtin.assert:
-            that: hubsite_service.status.ActiveState == 'active'
-            fail_msg: "hubsite.service is not active ({{ hubsite_service.status.ActiveState }})"
-            success_msg: "hubsite.service is active"
+            that: hubsite_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+            fail_msg: >-
+              Not every service is active:
+              {{ dict(hubsite_verify_units | zip(hubsite_services.results | map(attribute='status.ActiveState'))) }}
+            success_msg: "Every systemd service is active"
 
-        - name: Retrieve the Hubsite systemd service log for debugging
+        - name: Retrieve the Hubsite systemd services log for debugging
           when: hubsite_debug_service_enabled | bool
           ansible.builtin.command:
-            cmd: journalctl --no-pager --output=cat --unit=hubsite.service
+            cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
           changed_when: false
+          loop: "{{ hubsite_verify_units }}"
 
         - name: Wait for the Hubsite page to be served (up to 180s)
           ansible.builtin.uri:
@@ -141,7 +150,7 @@
         - name: Show the Hubsite verification summary
           ansible.builtin.debug:
             msg:
-              - "Hubsite systemd: {{ hubsite_service.status.ActiveState }}"
+              - "Hubsite systemd: {% for unit, state in hubsite_verify_units | zip(hubsite_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "Hubsite server: {{ hubsite_page.server }}"
               - "Hubsite page size: {{ hubsite_page.content | length }} bytes"
               - "Hubsite service entries: {{ hubsite_service_list_additional | map(attribute='name') | join(', ') }}"
