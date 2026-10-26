@@ -72,43 +72,34 @@ hubsite_subtitle: "Just click on a service to use it"
 
 ### Define services to display
 
-You can use the following variables to configure which services to display like below:
+The services to display are the entries of two lists, which the role combines:
+
+- `hubsite_service_list_auto`: for a playbook which uses this role, to fill with the services it manages
+- `hubsite_service_list_additional`: for your own entries, on top of those
+
+Each entry has these keys:
+
+- `name`: the service's name, shown on its card
+- `url`: the link which the card opens
+- `logo_location`: the path to a logo image on the Ansible controller, which the role copies to the server (e.g. `"{{ role_path }}/assets/nextcloud.png"` for one of the [logos the role ships](../assets)), or an empty value for no logo
+- `description`: a short description, shown on the card
+- `priority`: a number by which the cards are sorted (lower comes first)
+
+For example:
 
 ```yaml
-# Nextcloud
-hubsite_service_nextcloud_enabled: "{{ nextcloud_enabled }}"
-hubsite_service_nextcloud_name: Nextcloud
-hubsite_service_nextcloud_url: "'https://{{ nextcloud_hostname }}{{ nextcloud_path_prefix }}"
-hubsite_service_nextcloud_logo_location: "{{ role_path }}/assets/nextcloud.png"
-hubsite_service_nextcloud_description: "Sync your files & much more"
-hubsite_service_nextcloud_priority: 1000
-
-# Peertube
-hubsite_service_peertube_enabled: "{{ peertube_enabled }}"
-hubsite_service_peertube_name: Peertube
-hubsite_service_peertube_url: "'https://{{ peertube_hostname }}{{ peertube_path_prefix }}"
-hubsite_service_peertube_logo_location: "{{ role_path }}/assets/peertube.png"
-hubsite_service_peertube_description: "Watch and upload videos"
-hubsite_service_peertube_priority: 1000
+hubsite_service_list_additional:
+  - name: Nextcloud
+    url: https://nextcloud.example.com
+    logo_location: "{{ role_path }}/assets/nextcloud.png"
+    description: Sync your files & much more
+    priority: 1000
+  - name: PeerTube
+    url: https://peertube.example.com
+    logo_location: "{{ role_path }}/assets/peertube.png"
+    description: Watch and upload videos
+    priority: 1000
 ```
-
->[!NOTE]
-> If you don't have a fitting logo for your service, you can set an empty value to `hubsite_service_*_logo_location`.
-
-### Add services to a playbook
-
-You can add services to `hubsite_service_list_auto` on an Ansible playbook as below:
-
-```yaml
-hubsite_service_list_auto: |
-  {{
-    ([{'name': hubsite_service_nextcloud_name, 'url': hubsite_service_nextcloud_url, 'logo_location': hubsite_service_nextcloud_logo_location, 'description': hubsite_service_nextcloud_description, 'priority': hubsite_service_nextcloud_priority}] if hubsite_service_nextcloud_enabled else [])
-    +
-    ([{'name': hubsite_service_peertube_name, 'url': hubsite_service_peertube_url, 'logo_location': hubsite_service_peertube_logo_location, 'description': hubsite_service_peertube_description, 'priority': hubsite_service_peertube_priority}] if hubsite_service_peertube_enabled else [])
-  }}
-```
-
-Users of the playbook can add custom services to `hubsite_service_list_additional`.
 
 ### Add custom CSS rules (optional)
 
