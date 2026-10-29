@@ -149,3 +149,14 @@ hubsite_environment_variables_tz: UTC
 
 # Additional environment variables.
 hubsite_environment_variables_additional_variables: ""
+
+# hubsite_restart_necessary controls whether the Hubsite systemd
+# service will be restarted (when true) or merely started (when false) by the
+# systemd service manager role (when conditional restart is enabled).
+#
+# This value is automatically computed during installation based on whether
+# the env or labels file, the systemd service file, the container image or the
+# container network changed.
+# The default of `false` means "no restart needed" — appropriate when the role's
+# installation tasks haven't run (e.g., due to --tags skipping them).
+hubsite_restart_necessary: false
