@@ -36,6 +36,7 @@
   with_items:
     - env
     - labels
+  register: hubsite_support_files_result
 
 - name: Ensure Hubsite HTML and CSS files installed
   ansible.builtin.template:
@@ -66,20 +67,20 @@
       community.docker.docker_image_pull:
         name: "{{ hubsite_container_image }}"
         pull: always
-      register: result
+      register: hubsite_container_image_pull_result_ansible_module
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: result is not failed
+      until: hubsite_container_image_pull_result_ansible_module is not failed
 
     - name: Ensure nginx container image is pulled via ansible.builtin.command
       when: devture_systemd_docker_base_container_image_pull_method == 'command'
       ansible.builtin.command:
         cmd: "{{ devture_systemd_docker_base_host_command_docker }} pull {{ hubsite_container_image }}"
-      register: result
+      register: hubsite_container_image_pull_result_command
       retries: "{{ devture_playbook_help_container_retries_count }}"
       delay: "{{ devture_playbook_help_container_retries_delay }}"
-      until: result is not failed
-      changed_when: "'Downloaded newer image' in result.stdout"
+      until: hubsite_container_image_pull_result_command is not failed
+      changed_when: "'Downloaded newer image' in hubsite_container_image_pull_result_command.stdout"
 
 - name: Run if self-building of nginx container image is enabled
   when: "hubsite_container_image_self_build | bool"
@@ -108,7 +109,7 @@
     name: "{{ hubsite_container_network }}"
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
-  register: hubsite_network_creation_result
+  register: hubsite_network_creation_result_ansible_module
 
 - name: Ensure Hubsite container network is created via ansible.builtin.command
   when: devture_systemd_docker_base_container_network_creation_method == 'command'
@@ -118,12 +119,30 @@
       {% if devture_systemd_docker_base_ipv6_enabled %}--ipv6{% endif %}
       {{ devture_systemd_docker_base_container_networks_driver_options_string }}
       {{ hubsite_container_network }}
-  register: hubsite_network_creation_result
-  changed_when: hubsite_network_creation_result.rc == 0
-  failed_when: hubsite_network_creation_result.rc != 0 and 'already exists' not in hubsite_network_creation_result.stderr
+  register: hubsite_network_creation_result_command
+  changed_when: hubsite_network_creation_result_command.rc == 0
+  failed_when: hubsite_network_creation_result_command.rc != 0 and 'already exists' not in hubsite_network_creation_result_command.stderr
 
 - name: Ensure Hubsite systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/hubsite.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ hubsite_identifier }}.service"
     mode: "0644"
+  register: hubsite_systemd_service_result
+
+# The HTML, CSS and logo files are not included: the container serves them from a bind mount,
+# so it picks up changes to them without a restart. A changed network is included: when its
+# settings differ, community.docker.docker_network removes and recreates it, and reconnects the
+# running container without its endpoint settings (such as network aliases).
+- name: Determine whether Hubsite needs a restart
+  ansible.builtin.set_fact:
+    hubsite_restart_necessary: >-
+      {{
+        hubsite_support_files_result.changed | default(false)
+        or hubsite_systemd_service_result.changed | default(false)
+        or hubsite_container_image_pull_result_ansible_module.changed | default(false)
+        or hubsite_container_image_pull_result_command.changed | default(false)
+        or hubsite_container_image_build_result.changed | default(false)
+        or hubsite_network_creation_result_ansible_module.changed | default(false)
+        or hubsite_network_creation_result_command.changed | default(false)
+      }}
