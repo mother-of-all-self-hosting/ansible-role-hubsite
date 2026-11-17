@@ -24,7 +24,7 @@ hubsite_hostname: ""
 hubsite_subpath: "/"
 
 # renovate: datasource=docker depName=joseluisq/static-web-server versioning=semver
-hubsite_static_web_server_version: 2.44.1
+hubsite_static_web_server_version: 2.44.3
 
 hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}joseluisq/static-web-server:{{ hubsite_container_image_tag }}"
 hubsite_container_image_tag: "{{ hubsite_static_web_server_version }}"
