@@ -9,14 +9,14 @@
 # Usage: bin/compute-next-tag.sh
 #
 # Hubsite is a static site that this role renders itself and serves with the
-# official nginx container image. There is no upstream Hubsite version to key
-# releases on, so the version half of the tag is the nginx version - which is
+# official Static Web Server container image. There is no upstream Hubsite version to key
+# releases on, so the version half of the tag is the Static Web Server version - which is
 # both the only thing Renovate bumps here and what the existing tags of this
 # repository have always been named after.
 #
-# Tags look like `v<nginx version>-<release>`:
+# Tags look like `v<Static Web Server version>-<release>`:
 #
-# - if defaults/main.yml points at an nginx version that has never been
+# - if defaults/main.yml points at an Static Web Server version that has never been
 #   released, the release counter restarts at 0 (`v1.31.2-0`)
 # - otherwise the counter is incremented (`v1.31.2-1`), but only if something
 #   that actually affects the role has changed since the last release
@@ -46,10 +46,10 @@ role_defining_paths=(
 	'templates'
 )
 
-version="$(sed -nE 's|^hubsite_nginx_version:[[:space:]]*"?([^"[:space:]]+)"?.*$|\1|p' "$defaults_path" | head -n1)"
+version="$(sed -nE 's|^hubsite_static_web_server_version:[[:space:]]*"?([^"[:space:]]+)"?.*$|\1|p' "$defaults_path" | head -n1)"
 
 if [ -z "$version" ]; then
-	echo >&2 "Could not determine the nginx version from $defaults_path"
+	echo >&2 "Could not determine the Static Web Server version from $defaults_path"
 	exit 1
 fi
 

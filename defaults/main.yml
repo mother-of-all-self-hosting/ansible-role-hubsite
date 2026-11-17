@@ -23,20 +23,15 @@ hubsite_hostname: ""
 # The path at which Hubsite is served.
 hubsite_subpath: "/"
 
-# renovate: datasource=docker depName=nginx versioning=semver
-hubsite_nginx_version: 1.31.8
+# renovate: datasource=docker depName=joseluisq/static-web-server versioning=semver
+hubsite_static_web_server_version: 2.44.1
 
-hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}nginx:{{ hubsite_container_image_tag }}"
-hubsite_container_image_tag: "{{ hubsite_nginx_version }}"
+hubsite_container_image: "{{ hubsite_container_image_registry_prefix }}joseluisq/static-web-server:{{ hubsite_container_image_tag }}"
+hubsite_container_image_tag: "{{ hubsite_static_web_server_version }}"
 hubsite_container_image_registry_prefix: "{{ hubsite_container_image_registry_prefix_upstream }}"
 hubsite_container_image_registry_prefix_upstream: "{{ hubsite_container_image_registry_prefix_upstream_default }}"
 hubsite_container_image_registry_prefix_upstream_default: docker.io/
-
-hubsite_container_image_self_build: false
-hubsite_container_image_self_build_name: "nginx:{{ hubsite_container_image_self_build_repo_version }}"
-hubsite_container_image_self_build_repo: "https://github.com/nginx/docker-nginx.git"
-hubsite_container_image_self_build_repo_version: "{{ hubsite_nginx_version if hubsite_nginx_version != 'latest' else 'main' }}"
-hubsite_container_image_self_build_src_files_path: "{{ hubsite_base_path }}/docker-src"
+# TODO: re-add tasks to self-build the image
 
 # The base container network. It will be auto-created by this role if it doesn't exist already.
 hubsite_container_network: "{{ hubsite_identifier }}"
@@ -50,7 +45,7 @@ hubsite_container_network_deletion_enabled: true
 hubsite_container_http_host_bind_port: ""
 
 # The port number in the container
-hubsite_container_http_port: 80
+hubsite_container_http_port: 8080
 
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
@@ -146,6 +141,15 @@ hubsite_extra_css: ""
 
 # Specify the timezone
 hubsite_environment_variables_tz: UTC
+
+# Specify a logging level
+# Valid values: debug, error, info, trace, warn
+hubsite_environment_variables_server_log_level: info
+
+hubsite_environment_variables_server_root: /public
+
+# Control if the /metrics endpoint that exposes Prometheus metrics is enabled
+hubsite_environment_variables_server_metrics: false
 
 # Additional environment variables.
 hubsite_environment_variables_additional_variables: ""

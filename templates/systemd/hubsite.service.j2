@@ -27,22 +27,20 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
       --rm \
       --name={{ hubsite_identifier }} \
       --log-driver=none \
+      --user={{ hubsite_uid }}:{{ hubsite_gid }} \
       --cap-drop=ALL \
-      --cap-add=CHOWN \
-      --cap-add=NET_BIND_SERVICE \
-      --cap-add=SETGID \
-      --cap-add=SETUID \
+      --read-only \
       --network={{ hubsite_container_network }} \
       {% if hubsite_container_http_host_bind_port %}
       -p {{ hubsite_container_http_host_bind_port }}:{{ hubsite_container_http_port }} \
       {% endif %}
       --env-file={{ hubsite_base_path }}/env \
       --label-file={{ hubsite_base_path }}/labels \
-      --mount type=bind,src={{ hubsite_html_path }},dst=/usr/share/nginx/html,ro \
+      --mount type=bind,src={{ hubsite_html_path }},dst={{ hubsite_environment_variables_server_root }},ro \
       {% for arg in hubsite_container_extra_arguments %}
       {{ arg }} \
       {% endfor %}
-      {{ hubsite_container_image_self_build_name if hubsite_container_image_self_build else hubsite_container_image }} \
+      {{ hubsite_container_image }} \
       {% for arg in hubsite_process_extra_arguments %}
       {{ arg }} \
       {% endfor %}

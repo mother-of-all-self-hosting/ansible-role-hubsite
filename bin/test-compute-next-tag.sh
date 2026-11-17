@@ -29,7 +29,7 @@ cleanup() {
 
 trap cleanup EXIT
 
-# Starts a scenario with a repository at nginx 1.21.0 which has already
+# Starts a scenario with a repository at Static Web Server 1.21.0 which has already
 # seen two releases of it (v1.21.0-0 and v1.21.0-1).
 scenario() {
 	echo "$1"
@@ -46,7 +46,7 @@ scenario() {
 	git config user.name 'Test'
 	git config commit.gpgsign false
 
-	printf 'hubsite_nginx_version: 1.21.0\n' > defaults/main.yml
+	printf 'hubsite_static_web_server_version: 1.21.0\n' > defaults/main.yml
 	printf 'placeholder\n' > tasks/main.yml
 	printf 'placeholder\n' > templates/env.j2
 	printf 'placeholder\n' > assets/shield.png
@@ -90,9 +90,9 @@ expect() {
 	fi
 }
 
-bump_version="sed -i 's|hubsite_nginx_version: 1.21.0|hubsite_nginx_version: 1.22.0|' defaults/main.yml"
-revert_version="sed -i 's|hubsite_nginx_version: 1.22.0|hubsite_nginx_version: 1.21.0|' defaults/main.yml"
-prefix_version="sed -i 's|hubsite_nginx_version: 1.21.0|hubsite_nginx_version: v1.22.0|' defaults/main.yml"
+bump_version="sed -i 's|hubsite_static_web_server_version: 1.21.0|hubsite_static_web_server_version: 1.22.0|' defaults/main.yml"
+revert_version="sed -i 's|hubsite_static_web_server_version: 1.22.0|hubsite_static_web_server_version: 1.21.0|' defaults/main.yml"
+prefix_version="sed -i 's|hubsite_static_web_server_version: 1.21.0|hubsite_static_web_server_version: v1.22.0|' defaults/main.yml"
 edit_task="printf 'a task\n' >> tasks/main.yml"
 edit_template="printf 'a line\n' >> templates/env.j2"
 edit_asset="printf 'a pixel\n' >> assets/shield.png"

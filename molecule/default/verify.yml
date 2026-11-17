@@ -68,21 +68,27 @@
           retries: 36
           delay: 5
 
-        # Hubsite is a static site served by the official nginx container image, so
-        # the nginx version this role installs is the version of the thing being
-        # tested. nginx announces it in the `Server` response header (it ships with
-        # `server_tokens on`), which is the only version this deployment exposes.
-        - name: Assert the serving nginx is the version this role installs
-          ansible.builtin.assert:
-            that: hubsite_page.server == 'nginx/' ~ hubsite_defaults.hubsite_nginx_version
-            fail_msg: "Hubsite is served by {{ hubsite_page.server }}, expected nginx/{{ hubsite_defaults.hubsite_nginx_version }}"
-            success_msg: "Hubsite is served by {{ hubsite_page.server }}"
+        - name: Verify Static Web Server version
+          block:
+            - name: Inspect the Static Web Server container
+              ansible.builtin.command:
+                cmd: docker container inspect hubsite
+              changed_when: false
+              register: hubsite_container_raw
 
-        # A bare nginx container answers `/` with a 200 and its own welcome page,
-        # so the status code above says nothing about this role. These assertions
-        # are what separates the two: the page can only carry the configured
-        # headings and service entries if the role rendered its own template and
-        # nginx is serving that rendering.
+            - name: Read the Static Web Server container's configuration
+              ansible.builtin.set_fact:
+                hubsite_container: "{{ (hubsite_container_raw.stdout | from_json)[0] }}"
+
+            # Hubsite is a static site served by the official Static Web Server container image, so
+            # the Static Web Server version this role installs is the version of the thing being
+            # tested.
+            - name: Assert the serving Static Web Server is the version this role installs
+              ansible.builtin.assert:
+                that: hubsite_container.Config.Labels['org.opencontainers.image.version'] == hubsite_defaults.hubsite_static_web_server_version | string
+                fail_msg: "Hubsite is served by Static Web Server {{ hubsite_container.Config.Labels['org.opencontainers.image.version'] | default('none') }}, expected {{ hubsite_defaults.hubsite_static_web_server_version }}"
+                success_msg: "Hubsite is served by Static Web Server {{ hubsite_container.Config.Labels['org.opencontainers.image.version'] }}"
+
         - name: Assert the Hubsite page carries the configured headings
           ansible.builtin.assert:
             that:
@@ -126,8 +132,6 @@
             fail_msg: "The service entries are not ordered by priority: {{ hubsite_page.content }}"
             success_msg: "The service entries are ordered by priority"
 
-        # Assets are served out of the same directory as the page, and a bare nginx
-        # container answers both of these with a 404.
         - name: Fetch the Hubsite files that the page references
           ansible.builtin.uri:
             url: "http://127.0.0.1:{{ hubsite_molecule_http_bind_port }}{{ item }}"
@@ -191,7 +195,6 @@
             msg:
               - "Hubsite systemd: {% for unit, state in hubsite_verify_units | zip(hubsite_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "Hubsite restarts: {% for unit, restarts in hubsite_verify_units | zip(hubsite_restarts_after.results | map(attribute='status.NRestarts')) %}{{ restarts }} ({{ unit }}){% if not loop.last %}, {% endif %}{% endfor %}"
-              - "Hubsite server: {{ hubsite_page.server }}"
               - "Hubsite page size: {{ hubsite_page.content | length }} bytes"
               - "Hubsite service entries: {{ hubsite_service_list_additional | map(attribute='name') | join(', ') }}"
 
