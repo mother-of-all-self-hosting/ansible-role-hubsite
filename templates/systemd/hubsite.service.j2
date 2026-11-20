@@ -20,7 +20,6 @@ DefaultDependencies=no
 [Service]
 Type=simple
 Environment="HOME={{ devture_systemd_docker_base_systemd_unit_home_path }}"
-
 ExecStartPre={{ devture_systemd_docker_base_host_command_sh }} -c '{{ hubsite_container_cleanup_command | trim | replace("\n", " ") }}'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
@@ -48,6 +47,7 @@ ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
 {% for network in hubsite_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ hubsite_identifier }}
 {% endfor %}
+
 ExecStart={{ devture_systemd_docker_base_host_command_docker }} start --attach {{ hubsite_identifier }}
 
 ExecStop=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} stop -t {{ devture_systemd_docker_base_container_stop_grace_time_seconds }} {{ hubsite_identifier }} 2>/dev/null || true'
