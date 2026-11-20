@@ -22,7 +22,6 @@
   with_items:
     - hubsite_uid
     - hubsite_gid
-    - hubsite_container_network
     - hubsite_title
     - hubsite_subtitle
 
