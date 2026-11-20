@@ -1,4 +1,6 @@
 # SPDX-FileCopyrightText: 2023 Julian-Samuel Gebühr
+# SPDX-FileCopyrightText: 2023 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -20,4 +22,16 @@
   with_items:
     - hubsite_title
     - hubsite_subtitle
-    - hubsite_hostname
+
+- name: Run if Traefik is enabled
+  when: hubsite_container_labels_traefik_enabled | bool
+  block:
+    - name: Fail if Traefik settings required for Hubsite are not defined
+      ansible.builtin.fail:
+        msg: >-
+          You need to define a required configuration setting (`{{ item.name }}`).
+      when: "item.when | bool and lookup('vars', item.name, default='') | string | length == 0"
+      with_items:
+        - { "name": "hubsite_container_labels_traefik_hostname", when: true }
+        - { "name": "hubsite_container_labels_traefik_path_prefix", when: true }
+        - { "name": "hubsite_container_labels_traefik_middleware_basic_auth_users", when: "{{ hubsite_container_labels_traefik_middleware_basic_auth_enabled }}" }
